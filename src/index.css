@@ -304,3 +304,11 @@ Grocery List
 .clear-btn:hover {
   color: var(--clr-red-dark);
 }
+
+.searchField{
+  background: var(--clr-grey-10);
+  margin-bottom: 10px;
+  border: 2px solid rgb(130, 129, 129);
+  border-radius:5px;
+  padding: 2px;
+}

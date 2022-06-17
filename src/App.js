@@ -12,7 +12,9 @@ let getLocalStorage=()=>{
 
 function App() {
   const [name, setName] = useState('');
+  const[searchValue,setSearchValue]=useState('')
   const [list, setList] = useState(getLocalStorage());
+  const[filterList,setFilterList]=useState([])
   const [isEdit, setIsEdit] = useState(false);
   const [editId,setEditId] = useState(null)
   const [alert,setAlert] = useState({
@@ -67,6 +69,11 @@ function App() {
     localStorage.setItem('list',JSON.stringify(list))
   }, [list]);
 
+   useEffect(()=>{
+    const search = searchValue.toLowerCase()
+     setFilterList(list.filter((item)=>item.title.toLowerCase().includes(search)))
+   },[searchValue,list])
+
   return (
     <section className="section-center">
       <form className="grocery-form" onSubmit={handleSubmit}>
@@ -84,7 +91,9 @@ function App() {
 
       {list.length>0 &&
          <div className="grocery-container">
-         <List items={list} editItem={editItem} deleteItem={deleteItem}></List>
+          <input onChange={(e)=>setSearchValue(e.target.value)} className='searchField' placeholder='search'/>
+          
+         {searchValue.length>0 ?(filterList.length>0?<List items={filterList} editItem={editItem} deleteItem={deleteItem}></List>:<p>no items found!!</p>):<List items={list} editItem={editItem} deleteItem={deleteItem}></List>}
           <button className="clear-btn" onClick={()=>setList([])}>clear items</button>
          </div>
       }
